@@ -1,5 +1,15 @@
 console.log('script is connected');
 
+const showLoader = () => {
+  document.getElementById('loader').classList.remove('hidden');
+  document.getElementById('video-container').classList.add('hidden');
+}
+
+const hideLoader = () => {
+  document.getElementById('loader').classList.add('hidden');
+  document.getElementById('video-container').classList.remove('hidden');
+}
+
 // Fetching the nav API and Converting it to JSON Format
 
 function loadCategories() {
@@ -36,6 +46,8 @@ function displayCategories(categories) {
 // Fetching Video API's and converting to JSON
 
 function loadVideos(searchText = '') {
+  showLoader();
+
   fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then(res => res.json())
     .then(data => {
@@ -79,6 +91,7 @@ const displayVideos = (videos) => {
         <h2 class="text-2xl font-bold mt-3">Oops!! Sorry, There is no content here</h2>
       </div>
     `
+    hideLoader();
     return;
   }
 
@@ -127,10 +140,14 @@ const displayVideos = (videos) => {
     `
     videoContainer.append(videoCard);
   }))
+  hideLoader();
 };
 
 // Loading categorys
 const loadCategoryVideos = (id) => {
+
+  showLoader();
+
   const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
 
   fetch(url)
