@@ -35,8 +35,8 @@ function displayCategories(categories) {
 
 // Fetching Video API's and converting to JSON
 
-function loadVideos() {
-  fetch(' https://openapi.programming-hero.com/api/phero-tube/videos')
+function loadVideos(searchText = '') {
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then(res => res.json())
     .then(data => {
       removeActiveClass();
@@ -111,8 +111,12 @@ const displayVideos = (videos) => {
           <div class="intro">
             <h2 class="text-sm font-semibold">${video.title}
             </h2>
-            <p class="text-sm text-gray-400 flex gap-2">${video.authors[0].profile_name} <img class="w-5 h-5"
-                src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" alt=""></p>
+            <p class="text-sm text-gray-400 flex gap-2">
+            ${video.authors[0].profile_name} 
+            ${video.authors[0].verified === true ? `<img class="w-5 h-5"
+                src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" alt="">` : ``} 
+            
+            </p>
             <p class="text-gray-400 text-sm">${video.others.views} Views</p>
           </div>
 
@@ -179,5 +183,11 @@ const displayVideoDetails = (video) => {
 </div>
   `
 }
+
+
+document.getElementById('search-input').addEventListener('keyup', (e) => {
+  const input = e.target.value;
+  loadVideos(input);
+})
 
 loadCategories();
